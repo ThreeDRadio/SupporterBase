@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 25, 2013 at 02:23 PM
+-- Generation Time: Aug 25, 2013 at 03:04 PM
 -- Server version: 5.5.31
 -- PHP Version: 5.4.16
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('8f7b118f09ecbbb6bd57f20eff2454dc', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:23.0) Gecko/20100101 Firefox/23.0', 1377432554, 'a:2:{s:7:"user_id";s:1:"9";s:9:"logged_in";b:1;}');
+('b0991be2c81471402698b8f524ede263', '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:23.0) Gecko/20100101 Firefox/23.0', 1377435715, 'a:2:{s:7:"user_id";s:1:"9";s:9:"logged_in";b:1;}');
 
 -- --------------------------------------------------------
 
