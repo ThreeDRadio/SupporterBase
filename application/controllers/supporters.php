@@ -16,6 +16,27 @@ class Supporters extends CI_Controller {
     }
 
 
+    public function ajaxFindSupporterByLastName($partialName = "") {
+        if (!empty($partialName)) {
+            $matches = $this->supporter->findSupporterByLastName($partialName);
+            $data = array(
+                'matches' => $matches
+            );
+        }
+        else {
+            $data = array(
+                'matches' =>  array()
+            );
+        }
+        $this->load->view('ajax/matching_supporters.php', $data);
+    }
+
+    public function find() {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        $this->load->view('supporters/add');
+    }
+
     public function add() {
         $this->load->helper('form');
         $this->load->library('form_validation');

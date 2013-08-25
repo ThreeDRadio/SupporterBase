@@ -17,6 +17,18 @@ class Supporter extends CI_model {
     }
 
 
+    public function findSupporterByLastName($partialName) {
+        $this->db->like('last_name', $partialName, 'after');
+        $query = $this->db->get('supporters');
+
+        $results = array();
+        foreach ($query->result_array() as $result) {
+            array_push($results, $result);
+        }
+        return $results;
+    }
+
+
     public function isUsernameTaken($username) {
         $query = $this->db->get_where('users', array('username' => $username), 1);
         if ($query->num_rows() == 0) {
