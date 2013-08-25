@@ -8,7 +8,6 @@ class Users extends CI_Controller {
         $this->load->model('user');
     }
 
-
     /**
      * Displays the add user form...
      */
@@ -37,7 +36,7 @@ class Users extends CI_Controller {
             $this->form_validation->set_message('usernameCheck', 'Username already taken!');
             return FALSE;
         }
-        return FALSE;
+        return TRUE;
     }
 
 }

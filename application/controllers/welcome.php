@@ -19,8 +19,16 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
         $this->load->library('session');
+        $this->load->model('user');
+        $this->load->helper('url');
+
+        if ($this->user->isLoggedIn()) {
+            $this->load->view('welcome_message');
+        }
+        else {
+            redirect('login');
+        }
 	}
 }
 
