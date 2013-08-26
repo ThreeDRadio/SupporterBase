@@ -16,6 +16,7 @@ class Users extends CI_Controller {
         $this->load->library('form_validation');
 
         $data['title'] = 'Add a user';
+        $this->load->view('header');
 
         $this->form_validation->set_rules('username', 'Username', 'required|callback_usernameCheck');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -29,6 +30,7 @@ class Users extends CI_Controller {
            $this->user->addUser($this->input->post('username'), $this->input->post('password'));
            $this->load->view('users/user_added');
         }
+        $this->load->view('footer');
     }
 
     public function usernameCheck($username) {

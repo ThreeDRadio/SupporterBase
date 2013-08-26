@@ -24,7 +24,9 @@ class Welcome extends CI_Controller {
         $this->load->helper('url');
 
         if ($this->user->isLoggedIn()) {
+            $this->load->view('header');
             $this->load->view('welcome_message');
+            $this->load->view('footer');
         }
         else {
             redirect('login');

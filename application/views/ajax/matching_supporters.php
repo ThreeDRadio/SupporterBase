@@ -11,6 +11,8 @@
         <state><?php echo $supporter['state'] ?></state>
         <phone><?php echo $supporter['phone'] ?></phone>
         <email><?php echo $supporter['email'] ?></email>
+        <status><?php echo $supporter['status'] ?></status>
+        <type><?php echo $supporter['type'] ?></type>
     </supporter>
 
 <?php endforeach; ?>

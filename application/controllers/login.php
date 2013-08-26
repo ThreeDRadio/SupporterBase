@@ -11,6 +11,7 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
+        $this->load->view('header');
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->helper('url');
@@ -36,6 +37,7 @@ class Login extends CI_Controller {
                 }
             }
         }
+        $this->load->view('footer');
 	}
 }
 

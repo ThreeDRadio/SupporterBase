@@ -18,8 +18,17 @@ class Supporter extends CI_model {
 
 
     public function findSupporterByLastName($partialName) {
-        $this->db->like('last_name', $partialName, 'after');
-        $query = $this->db->get('supporters');
+        //$this->db->like('last_name', $partialName, 'after');
+        //$query = $this->db->get('supporters');
+        $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone, m.email,
+            mh.expiration_date, mh.type
+            FROM supporters m
+            LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
+            LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
+            AND mh.expiration_date < mh2.expiration_date
+            WHERE mh2.expiration_date IS NULL
+            AND m.last_name LIKE '$partialName%'");
 
         $results = array();
         foreach ($query->result_array() as $result) {

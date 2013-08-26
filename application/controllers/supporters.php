@@ -19,6 +19,15 @@ class Supporters extends CI_Controller {
     public function ajaxFindSupporterByLastName($partialName = "") {
         if (!empty($partialName)) {
             $matches = $this->supporter->findSupporterByLastName($partialName);
+            foreach ($matches as &$match) {
+                $time = time();
+                if ($match['expiration_date'] < $time) {
+                    $match['status'] = 'Expired!';
+                }
+                else {
+                    $match['status'] = 'Expires on ' . strftime('%d/%m/%y', $match['expiration_date']);
+                }
+            }
             $data = array(
                 'matches' => $matches
             );
@@ -32,14 +41,17 @@ class Supporters extends CI_Controller {
     }
 
     public function find() {
+        $this->load->view('header');
         $this->load->helper('form');
         $this->load->library('form_validation');
-        $this->load->view('supporters/add');
+        $this->load->view('supporters/find');
+        $this->load->view('footer');
     }
 
     public function add() {
         $this->load->helper('form');
         $this->load->library('form_validation');
+        $this->load->view('header');
 
         $this->form_validation->set_rules('first', 'First Name', 'required|alpha_dash');
         $this->form_validation->set_rules('last', 'Last Name', 'required|alpha_dash');
@@ -71,6 +83,7 @@ class Supporters extends CI_Controller {
             $this->supporter->addSupporter($data);
             $this->load->view('supporters/supporter_added');
         }
+        $this->load->view('footer');
     }
 }
 
