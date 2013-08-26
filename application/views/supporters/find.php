@@ -15,8 +15,9 @@ $('input#last_name').keyup(function() {
                 success: function( data ) {
                     xmlDoc = $.parseXML(data);
                     $xml = $(xmlDoc);
-                    text = '<table width="100%"><tr><th>Name</th><th>Address</th><th>Email</th><th>Phone</th><th>Type</th><th>Status</th></tr>';
+                    text = '<table width="100%"><tr><th>Name</th><th>Address</th><th>Email</th><th>Phone</th><th>Type</th><th>Status</th><th>Control</th></tr>';
                     $xml.children().children().each(function() {
+                        id = $(this).children('supporter_id').text();
                         firstName = $(this).children('first_name').text();
                         lastName = $(this).children('last_name').text();
                         address1 = $(this).children('address1').text();
@@ -38,6 +39,8 @@ $('input#last_name').keyup(function() {
                         text += '<td>' + phone + '</td>';
                         text += '<td>' + type + '</td>';
                         text += '<td>' + stat + '</td>';
+                        text += '<td><a href="<?php echo site_url('supporters/renew')?>/' + id + '">Renew</a>';
+                        text += ' | <a href="<?php echo site_url('supporters/edit')?>/' + id + '">Edit</a></td>';
                         text += '</tr>';
 
                     });

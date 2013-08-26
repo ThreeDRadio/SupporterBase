@@ -16,10 +16,33 @@ class Supporter extends CI_model {
         return $this->db->insert('supporters', $supporterInfo);
     }
 
+    public function getSupporter($id) {
+        $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone, m.email,
+            mh.expiration_date, mh.type
+            FROM supporters m
+            LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
+            LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
+            AND mh.expiration_date < mh2.expiration_date
+            WHERE mh2.expiration_date IS NULL
+            AND m.supporter_id  = '$id' 
+            LIMIT 1");
+
+        return $query->result_array();
+    }
+
+    public function addTransaction($user_id, $supporter_id, $expiration_date, $type) {
+        $data = array(
+            'user_id' => $user_id,
+            'supporter_id' => $supporter_id,
+            'expiration_date' => $expiration_date,
+            'type' => $type,
+            'timestamp' => time()
+        );
+        return $this->db->insert('transactions', $data);
+    }
 
     public function findSupporterByLastName($partialName) {
-        //$this->db->like('last_name', $partialName, 'after');
-        //$query = $this->db->get('supporters');
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
             m.address1, m.address2, m.town, m.state, m.postcode, m.phone, m.email,
             mh.expiration_date, mh.type

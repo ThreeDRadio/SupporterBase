@@ -37,7 +37,7 @@ class Supporters extends CI_Controller {
                 'matches' =>  array()
             );
         }
-        $this->load->view('ajax/matching_supporters.php', $data);
+        $this->load->view('ajax/matching_supporters', $data);
     }
 
     public function find() {
@@ -46,6 +46,45 @@ class Supporters extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->view('supporters/find');
         $this->load->view('footer');
+    }
+
+    public function renew($id) {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('expiration_year', 'Expiration Year', 'required|integer|exact_length[4]');
+        $this->form_validation->set_rules('expiration_day', 'Expiration Day', 'required|integer');
+        $this->form_validation->set_rules('expiration_month', 'Expiration Month', 'required|integer');
+
+        $match = $this->supporter->getSupporter($id)[0];
+
+        $newExpiryYear = strftime("%Y", $match['expiration_date']) +1;
+        $expirationMonth = strftime("%m", $match['expiration_date']);
+        $expirationDay = strftime("%d", $match['expiration_date']);
+
+        $data = array(
+            'supporter_info' => $match,
+            'new_expiration_year' => $newExpiryYear,
+            'new_expiration_month' => $expirationMonth,
+            'new_expiration_day' => $expirationDay
+        );
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('header');
+            $this->load->view('supporters/renew', $data);
+            $this->load->view('footer');
+        }
+        else {
+            $date = strtotime($this->input->post('expiration_year') . "-" .
+                              $this->input->post('expiration_month') . "-" .
+                              $this->input->post('expiration_day'));
+
+            $this->supporter->addTransaction($this->session->userdata('user_id'), $id, $date, $this->input->post('type'));
+            $this->load->view('header');
+            $this->load->view('supporters/supporter_renewed');
+            $this->load->view('footer');
+        }
+
     }
 
     public function add() {

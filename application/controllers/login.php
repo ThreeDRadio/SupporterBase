@@ -11,7 +11,6 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
-        $this->load->view('header');
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->helper('url');
@@ -24,7 +23,9 @@ class Login extends CI_Controller {
         }
         else {
             if ($this->form_validation->run() === FALSE) {
+                $this->load->view('header');
                 $this->load->view('users/login');
+                $this->load->view('footer');
             }
             else
             {
@@ -32,12 +33,13 @@ class Login extends CI_Controller {
                     redirect('welcome');
                 }
                 else {
+                    $this->load->view('header');
                     $this->form_validation->set_message('usernameCheck', 'Username or password incorrect!');
                     $this->load->view('users/login');
+                    $this->load->view('footer');
                 }
             }
         }
-        $this->load->view('footer');
 	}
 }
 
