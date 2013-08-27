@@ -25,7 +25,12 @@ $options = array(
     'member_concession' => 'Concession Member'
 );
 
-echo form_dropdown('type', $options, $supporter_info['type']);
+if (empty($supporter_info['type'])) {
+    echo form_dropdown('type', $options, 'member');
+}
+else {
+    echo form_dropdown('type', $options, $supporter_info['type']);
+}
 
 ?>
 <br />

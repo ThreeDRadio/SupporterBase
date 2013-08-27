@@ -58,6 +58,11 @@ class Supporters extends CI_Controller {
 
         $match = $this->supporter->getSupporter($id)[0];
 
+        if (empty($match['expiration_date'])) {
+            $year = strftime("%Y");
+            $match['expiration_date'] = strtotime("August 31 $year");
+        }
+
         $newExpiryYear = strftime("%Y", $match['expiration_date']) +1;
         $expirationMonth = strftime("%m", $match['expiration_date']);
         $expirationDay = strftime("%d", $match['expiration_date']);
@@ -97,7 +102,7 @@ class Supporters extends CI_Controller {
 
         $this->form_validation->set_rules('address1', 'Address Line 1', 'required');
 
-        $this->form_validation->set_rules('town', 'Town/Suburb', 'required|alpha');
+        $this->form_validation->set_rules('town', 'Town/Suburb', 'required');
         $this->form_validation->set_rules('state', 'State', 'required|alpha|min_length[2]|max_length[3]');
         $this->form_validation->set_rules('postcode', 'Postcode', 'required|integer|exact_length[4]');
         $this->form_validation->set_rules('email', 'Email', 'valid_email');
@@ -115,12 +120,58 @@ class Supporters extends CI_Controller {
                 'state' => $this->input->post('state'),
                 'postcode' => $this->input->post('postcode'),
                 'country' => $this->input->post('country'),
-                'phone' => $this->input->post('phone'),
+                'phone_mobile' => $this->input->post('phone'),
                 'email' => $this->input->post('email')
             );
 
             $this->supporter->addSupporter($data);
             $this->load->view('supporters/supporter_added');
+        }
+        $this->load->view('footer');
+    }
+
+    public function edit($id) {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        $this->load->view('header');
+        $this->load->helper('url');
+
+        $this->form_validation->set_rules('first', 'First Name', 'required|alpha_dash');
+        $this->form_validation->set_rules('last', 'Last Name', 'required|alpha_dash');
+
+        $this->form_validation->set_rules('address1', 'Address Line 1', 'required');
+
+        $this->form_validation->set_rules('town', 'Town/Suburb', 'required');
+        $this->form_validation->set_rules('state', 'State', 'required|alpha|min_length[2]|max_length[3]');
+        $this->form_validation->set_rules('postcode', 'Postcode', 'required|integer|exact_length[4]');
+        $this->form_validation->set_rules('email', 'Email', 'valid_email');
+
+        $match = $this->supporter->getSupporter($id)[0];
+        $data = array(
+            'supporter_info' => $match,
+        );
+
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('supporters/edit', $data);
+        }
+        else {
+            $data = array(
+                'first_name' => $this->input->post('first'),
+                'supporter_id' => $id,
+                'last_name' => $this->input->post('last'),
+                'address1' => $this->input->post('address1'),
+                'address2' => $this->input->post('address2'),
+                'town' => $this->input->post('town'),
+                'state' => $this->input->post('state'),
+                'postcode' => $this->input->post('postcode'),
+                'country' => $this->input->post('country'),
+                'phone_mobile' => $this->input->post('phone'),
+                'email' => $this->input->post('email')
+            );
+
+            $this->supporter->updateSupporter($id, $data);
+            $this->load->view('supporters/supporter_updated', $data);
         }
         $this->load->view('footer');
     }

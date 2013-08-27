@@ -16,9 +16,14 @@ class Supporter extends CI_model {
         return $this->db->insert('supporters', $supporterInfo);
     }
 
+    public function updateSupporter($id, $supporterInfo) {
+        $this->db->where('supporter_id', $id);
+        $this->db->update('supporters', $supporterInfo);
+    }
+
     public function getSupporter($id) {
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
-            m.address1, m.address2, m.town, m.state, m.postcode, m.phone, m.email,
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
             mh.expiration_date, mh.type
             FROM supporters m
             LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
@@ -44,7 +49,7 @@ class Supporter extends CI_model {
 
     public function findSupporterByLastName($partialName) {
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
-            m.address1, m.address2, m.town, m.state, m.postcode, m.phone, m.email,
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
             mh.expiration_date, mh.type
             FROM supporters m
             LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id

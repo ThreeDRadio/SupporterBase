@@ -9,7 +9,7 @@
         <town><?php echo $supporter['town'] ?></town>
         <postcode><?php echo $supporter['postcode'] ?></postcode>
         <state><?php echo $supporter['state'] ?></state>
-        <phone><?php echo $supporter['phone'] ?></phone>
+        <phone><?php echo $supporter['phone_mobile'] ?></phone>
         <email><?php echo $supporter['email'] ?></email>
         <status><?php echo $supporter['status'] ?></status>
         <type><?php echo $supporter['type'] ?></type>
