@@ -11,7 +11,7 @@
 $('input#last_name').keyup(function() {
     if ($('input#last_name').val().length >= 2) {
         $.ajax({
-            url: "<?php echo site_url('supporters/ajaxFindSupporterByLastName') ?>/" + $('input#last_name').val(),
+            url: "<?php echo site_url('supporters/ajaxFindSupporterByLastName') ?>/" + encodeURIComponent($('input#last_name').val()),
                 success: function( data ) {
                     xmlDoc = $.parseXML(data);
                     $xml = $(xmlDoc);

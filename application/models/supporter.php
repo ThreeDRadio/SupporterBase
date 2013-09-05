@@ -56,7 +56,7 @@ class Supporter extends CI_model {
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
-            AND m.last_name LIKE '$partialName%'");
+            AND m.last_name LIKE " . $this->db->escape($partialName . '%'));
 
         $results = array();
         foreach ($query->result_array() as $result) {

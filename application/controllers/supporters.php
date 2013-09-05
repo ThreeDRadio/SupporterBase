@@ -18,7 +18,7 @@ class Supporters extends CI_Controller {
 
     public function ajaxFindSupporterByLastName($partialName = "") {
         if (!empty($partialName)) {
-            $matches = $this->supporter->findSupporterByLastName($partialName);
+            $matches = $this->supporter->findSupporterByLastName(urldecode($partialName));
             foreach ($matches as &$match) {
                 $time = time();
                 if ($match['expiration_date'] < $time) {
