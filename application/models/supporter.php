@@ -66,6 +66,22 @@ class Supporter extends CI_model {
             ");
         return $query->result_array();
     }
+    public function getExpiredMembers() {
+        $time = time();
+        $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
+            mh.expiration_date, mh.type
+            FROM supporters m
+            LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
+            LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
+            AND mh.expiration_date < mh2.expiration_date
+            WHERE mh2.expiration_date IS NULL
+            AND mh.expiration_date < '$time'
+            AND (mh.type='member' OR mh.type='member_concession')
+            ORDER BY m.last_name ASC
+            ");
+        return $query->result_array();
+    }
 
 
     public function getCurrentMemberCount() {
