@@ -22,10 +22,25 @@ class Welcome extends CI_Controller {
         $this->load->library('session');
         $this->load->model('user');
         $this->load->helper('url');
+        $this->load->model('supporter');
 
         if ($this->user->isLoggedIn()) {
             $this->load->view('header');
-            $this->load->view('welcome_message');
+
+            $activeMembers = $this->supporter->getCurrentMemberCount();
+            $expiredMembers = $this->supporter->getExpiredMemberCount();
+
+            $activeSubs = $this->supporter->getCurrentSubscriberCount();
+            $expiredSubs = $this->supporter->getExpiredSubscriberCount();
+
+            $data = array( 
+                'activeMembers' => $activeMembers,
+                'expiredMembers' => $expiredMembers,
+                'activeSubs' => $activeSubs,
+                'expiredSubs' => $expiredSubs
+            );
+
+            $this->load->view('welcome_message', $data);
             $this->load->view('footer');
         }
         else {

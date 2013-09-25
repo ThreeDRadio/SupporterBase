@@ -48,6 +48,14 @@ class Supporters extends CI_Controller {
         $this->load->view('footer');
     }
 
+    public function giveEveryone2012() {
+        $date = strtotime("August 31 2012");
+        $members = $this->supporter->getSupporters();
+        foreach ($members as $member) {
+            $this->supporter->addTransaction($this->session->userdata('user_id'), $member['supporter_id'], $date, 'member');
+        }
+    }
+
     public function renew($id) {
         $this->load->helper('form');
         $this->load->library('form_validation');
@@ -57,7 +65,6 @@ class Supporters extends CI_Controller {
         $this->form_validation->set_rules('expiration_month', 'Expiration Month', 'required|integer');
 
         $match = $this->supporter->getSupporter($id)[0];
-
         if (empty($match['expiration_date'])) {
             $year = strftime("%Y");
             $match['expiration_date'] = strtotime("August 31 $year");
