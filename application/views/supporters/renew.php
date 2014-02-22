@@ -22,7 +22,8 @@ $options = array(
     'sub'  => 'Subscription',
     'sub_concession'    => 'Concession Subscription',
     'member'   => 'Member',
-    'member_concession' => 'Concession Member'
+    'member_concession' => 'Concession Member',
+    'probationary' => 'Probationary/Trainee'
 );
 
 if (empty($supporter_info['type'])) {
