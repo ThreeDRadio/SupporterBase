@@ -2,9 +2,10 @@
 
 class Supporter extends CI_model {
 
-    public function __construct() {
+    public function __construct($includeExcluded = false) {
         parent::__construct();
         $this->load->database();
+        $this->excluded = !$includeExcluded;
     }
 
     /**
@@ -23,14 +24,14 @@ class Supporter extends CI_model {
 
     public function getSupporter($id) {
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
-            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email, m.excluded,
             mh.expiration_date, mh.type
             FROM supporters m
             LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
-            AND m.supporter_id  = '$id' 
+            AND m.supporter_id  = '$id' " . (($this->excluded) ? " AND m.excluded = false " : "") . " 
             LIMIT 1");
 
         return $query->result_array();
@@ -43,7 +44,7 @@ class Supporter extends CI_model {
             LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
-            WHERE mh2.expiration_date IS NULL
+            WHERE mh2.expiration_date IS NULL " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             ORDERBY m.last_name DESC
             ");
 
@@ -61,7 +62,7 @@ class Supporter extends CI_model {
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
             AND mh.expiration_date >= '$time'
-            AND (mh.type='member' OR mh.type='member_concession')
+            AND (mh.type='member' OR mh.type='member_concession') " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             ORDER BY m.last_name ASC
             ");
         return $query->result_array();
@@ -77,7 +78,7 @@ class Supporter extends CI_model {
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
             AND mh.expiration_date < '$time'
-            AND (mh.type='member' OR mh.type='member_concession')
+            AND (mh.type='member' OR mh.type='member_concession') " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             ORDER BY m.last_name ASC
             ");
         return $query->result_array();
@@ -94,7 +95,7 @@ class Supporter extends CI_model {
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
-            AND mh.expiration_date >= '$time'
+            AND mh.expiration_date >= '$time' " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             AND (mh.type='member' OR mh.type='member_concession')");
         return $query->num_rows();
     }
@@ -108,7 +109,7 @@ class Supporter extends CI_model {
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
-            AND mh.expiration_date < '$time'
+            AND mh.expiration_date < '$time' " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             AND (mh.type='member' OR mh.type='member_concession')");
         return $query->num_rows();
     }
@@ -123,7 +124,7 @@ class Supporter extends CI_model {
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
-            AND mh.expiration_date >= '$time'
+            AND mh.expiration_date >= '$time' " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             AND (mh.type='sub' OR mh.type='sub_concession')");
         return $query->num_rows();
     }
@@ -137,7 +138,7 @@ class Supporter extends CI_model {
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
-            AND mh.expiration_date < '$time'
+            AND mh.expiration_date < '$time' " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             AND (mh.type='sub' OR mh.type='sub_concession')");
         return $query->num_rows();
     }
@@ -161,7 +162,7 @@ class Supporter extends CI_model {
             LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
-            WHERE mh2.expiration_date IS NULL
+            WHERE mh2.expiration_date IS NULL " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             AND m.last_name LIKE " . $this->db->escape($partialName . '%'));
 
         $results = array();

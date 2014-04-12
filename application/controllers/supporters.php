@@ -174,7 +174,8 @@ class Supporters extends CI_Controller {
                 'postcode' => $this->input->post('postcode'),
                 'country' => $this->input->post('country'),
                 'phone_mobile' => $this->input->post('phone'),
-                'email' => $this->input->post('email')
+                'email' => $this->input->post('email'),
+                'excluded' => $this->input->post('excluded')
             );
 
             $this->supporter->updateSupporter($id, $data);

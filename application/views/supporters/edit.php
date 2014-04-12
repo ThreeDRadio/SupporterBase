@@ -34,6 +34,9 @@
     <label for="email">Email:</label>
     <input type="input" name="email"  value="<?php echo $supporter_info['email'];?>" /><br />
 
+    <label for="excluded">Exclude: </label>
+    <input type="checkbox" name="excluded" value="1" <?php echo (($supporter_info['excluded'] == 1) ? " checked" : ""); ?> /><br />
+
     <input type="submit" name="submit" value="Update Supporter" />
 
 </form>
