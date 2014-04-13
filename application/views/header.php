@@ -71,3 +71,9 @@
 	<h1>Three D Radio Supporter Management!</h1>
 
 	<div id="body">
+
+    <p><a href="<?php echo site_url('') ?>">Home</a> | 
+    <a href="<?php echo site_url('users/add') ?>">Add User</a> | 
+    <a href="<?php echo site_url('supporters/add') ?>">Add Supporter</a> | 
+    <a href="<?php echo site_url('supporters/find') ?>">Find Supporter</a>
+</p>
