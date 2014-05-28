@@ -41,5 +41,40 @@
 
 </form>
 
+<h2>Subscription History</h2>
+<table>
+<tr><th>Expiration Date</th><th width="100">Type</th><th width="100">Payment</th><th width="100">Sub Pack</th><th>Note</th></tr>
+<?php
+foreach ($subscriptions as $sub) {
+    echo '<tr><td width="120">';
+    echo strftime("%d/%m/%y", $sub['expiration_date']);
+    echo '</td><td>' . $sub['type'] . '</td>'; 
+    echo '</td><td>' . (($sub['payment_processed'] == 1) ? 'PAID' : 'NOT PAID') . '</td>'; 
+    echo '</td><td>' . (($sub['pack_sent'] == 1) ? 'SENT' : 'NOT SENT') . '</td>'; 
+    echo '</td><td>' . $sub['note'] . '</td>'; 
+    
+    echo '</tr>';
+}
+?>
+</table>
+
+<h2>Notes</h2>
+<table>
+<tr><th>Meta</th><th>Note</th></tr>
+<?php
+foreach ($notes as $note) {
+    echo '<tr><td width="120">';
+    echo strftime("%d/%m/%y", $note['time']);
+    echo '</td><td>' . $note['note'] . '</td></tr>';
+}
+?>
+</table>
+
+<?php echo form_open('supporters/add_note'.'/'. $supporter_info['supporter_id']) ?>
+    <label for="note"><h3>New Note:</h3></label><br>
+    <textarea name="note" rows="3" cols="100"></textarea><br />
+    <input type="submit" name="submit" value="New Note" />
+
+</form>
 
 

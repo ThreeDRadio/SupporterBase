@@ -99,6 +99,28 @@ class Supporters extends CI_Controller {
 
     }
 
+    public function add_note($id) {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        $this->load->view('header');
+
+        $this->form_validation->set_rules('note', 'note', 'required');
+        if ($this->form_validation->run() === FALSE) {
+            redirect('supporters/edit/'. $id);
+        }
+        else {
+            $data = array(
+                'time' => time(),
+                'user_id' => $this->session->userdata('user_id'),
+                'note' => $this->input->post('note'),
+                'supporter_id' => $id
+            );
+            $this->supporter->addNote($data);
+            redirect('supporters/edit/'. $id);
+        }
+
+    } 
+
     public function add() {
         $this->load->helper('form');
         $this->load->library('form_validation');
@@ -156,6 +178,8 @@ class Supporters extends CI_Controller {
         $match = $this->supporter->getSupporter($id)[0];
         $data = array(
             'supporter_info' => $match,
+            'notes' => $this->supporter->getSupporterNotes($id),
+            'subscriptions' => $this->supporter->getSubscriptions($id)
         );
 
 
@@ -175,7 +199,8 @@ class Supporters extends CI_Controller {
                 'country' => $this->input->post('country'),
                 'phone_mobile' => $this->input->post('phone'),
                 'email' => $this->input->post('email'),
-                'excluded' => $this->input->post('excluded')
+                'excluded' => $this->input->post('excluded'),
+                'notes' => $this->supporter->getSupporterNotes($id)
             );
 
             $this->supporter->updateSupporter($id, $data);

@@ -44,10 +44,20 @@
 		padding: 12px 10px 12px 10px;
 	}
 
+    label {
+        width: 120px;
+        display: block;
+        float: left;
+    }
+
 	#body{
 		margin: 0 15px 0 15px;
 	}
-	
+
+    th {
+        text-align: left;
+    }
+
 	p.footer{
 		text-align: right;
 		font-size: 11px;

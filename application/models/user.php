@@ -72,6 +72,11 @@ class User extends CI_model {
         return true;
     }
 
+    public function getUsername($userID) {
+        $query = $this->db->get_where('users', array('user_id' => $userID), 1);
+        return $query->result_array();
+    }
+
     /**
      * Generates a random salt to use on passwords.
      */

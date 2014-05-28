@@ -36,6 +36,28 @@ class Supporter extends CI_model {
 
         return $query->result_array();
     }
+
+    public function getSupporterNotes($supporterID) {
+        $query = $this->db->query("SELECT *
+            FROM supporter_notes 
+            WHERE supporter_id = '$supporterID' ORDER BY time DESC");
+
+        return $query->result_array();
+    }
+
+    public function getSubscriptions($supporterID) {
+        $query = $this->db->query("SELECT *
+            FROM transactions 
+            WHERE supporter_id = '$supporterID' ORDER BY expiration_date DESC");
+
+        return $query->result_array();
+
+    }
+
+    public function addNote($data) {
+        return $this->db->insert('supporter_notes', $data);
+    }
+
     public function getSupporters() {
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
             m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
