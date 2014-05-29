@@ -78,7 +78,8 @@ class Supporters extends CI_Controller {
             'supporter_info' => $match,
             'new_expiration_year' => $newExpiryYear,
             'new_expiration_month' => $expirationMonth,
-            'new_expiration_day' => $expirationDay
+            'new_expiration_day' => $expirationDay,
+            'note' => $this->input->post('note')
         );
 
         if ($this->form_validation->run() === FALSE) {
@@ -91,7 +92,7 @@ class Supporters extends CI_Controller {
                               $this->input->post('expiration_month') . "-" .
                               $this->input->post('expiration_day'));
 
-            $this->supporter->addTransaction($this->session->userdata('user_id'), $id, $date, $this->input->post('type'));
+            $this->supporter->addTransaction($this->session->userdata('user_id'), $id, $date, $this->input->post('type'), $this->input->post('note'));
             $this->load->view('header');
             $this->load->view('supporters/supporter_renewed');
             $this->load->view('footer');

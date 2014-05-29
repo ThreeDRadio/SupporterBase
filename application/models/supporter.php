@@ -165,13 +165,14 @@ class Supporter extends CI_model {
         return $query->num_rows();
     }
 
-    public function addTransaction($user_id, $supporter_id, $expiration_date, $type) {
+    public function addTransaction($user_id, $supporter_id, $expiration_date, $type, $note) {
         $data = array(
             'user_id' => $user_id,
             'supporter_id' => $supporter_id,
             'expiration_date' => $expiration_date,
             'type' => $type,
-            'timestamp' => time()
+            'timestamp' => time(),
+            'note' => $note
         );
         return $this->db->insert('transactions', $data);
     }

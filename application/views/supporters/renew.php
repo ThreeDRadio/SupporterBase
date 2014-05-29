@@ -23,7 +23,10 @@ $options = array(
     'sub_concession'    => 'Concession Subscription',
     'member'   => 'Member',
     'member_concession' => 'Concession Member',
-    'probationary' => 'Probationary/Trainee'
+    'probationary' => 'Probationary/Trainee',
+    'band' => 'Band',
+    'honourary' => 'Honourary',
+    'life' => 'Life'
 );
 
 if (empty($supporter_info['type'])) {
@@ -35,6 +38,9 @@ else {
 
 ?>
 <br />
+<label for="note">Note:</label><br>
+<textarea name="note" rows="3" cols="100"></textarea><br />
+
     <input type="submit" name="submit" value="Renew" />
     
 </form>
