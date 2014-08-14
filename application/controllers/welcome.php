@@ -33,11 +33,14 @@ class Welcome extends CI_Controller {
             $activeSubs = $this->supporter->getCurrentSubscriberCount();
             $expiredSubs = $this->supporter->getExpiredSubscriberCount();
 
+            $mysteryCount = $this->supporter->getMysterySupporterCount();
+
             $data = array( 
                 'activeMembers' => $activeMembers,
                 'expiredMembers' => $expiredMembers,
                 'activeSubs' => $activeSubs,
-                'expiredSubs' => $expiredSubs
+                'expiredSubs' => $expiredSubs,
+                'mysterySubs' => $mysteryCount
             );
 
             $this->load->view('welcome_message', $data);

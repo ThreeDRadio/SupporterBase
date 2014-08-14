@@ -155,7 +155,10 @@ class Supporters extends CI_Controller {
             );
 
             $this->supporter->addSupporter($data);
-            $this->load->view('supporters/supporter_added');
+            $page_data = array(
+                'supporter_id' => $id
+            );
+            $this->load->view('supporters/supporter_added', $page_data);
         }
         $this->load->view('footer');
     }
@@ -178,6 +181,7 @@ class Supporters extends CI_Controller {
 
         $match = $this->supporter->getSupporter($id)[0];
         $data = array(
+            'supporter_id' => $id,
             'supporter_info' => $match,
             'notes' => $this->supporter->getSupporterNotes($id),
             'subscriptions' => $this->supporter->getSubscriptions($id)
@@ -201,10 +205,11 @@ class Supporters extends CI_Controller {
                 'phone_mobile' => $this->input->post('phone'),
                 'email' => $this->input->post('email'),
                 'excluded' => $this->input->post('excluded'),
-                'notes' => $this->supporter->getSupporterNotes($id)
             );
 
             $this->supporter->updateSupporter($id, $data);
+
+
             $this->load->view('supporters/supporter_updated', $data);
         }
         $this->load->view('footer');

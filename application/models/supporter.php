@@ -73,6 +73,26 @@ class Supporter extends CI_model {
         return $query->result_array();
     }
 
+    public function getMysterySupporters() {
+        $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email
+            FROM supporters m
+            WHERE m.supporter_id NOT IN (SELECT supporter_id FROM transactions
+            ORDER BY m.last_name ASC"
+        );
+        return $query->result_array();
+    }
+    public function getMysterySupporterCount() {
+        $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email
+            FROM supporters m
+            WHERE m.supporter_id NOT IN (SELECT supporter_id FROM transactions)
+            ORDER BY m.last_name ASC"
+        );
+        return $query->num_rows();
+    }
+
+
     public function getCurrentMembers() {
         $time = time();
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
@@ -84,7 +104,7 @@ class Supporter extends CI_model {
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
             AND mh.expiration_date >= '$time'
-            AND (mh.type='member' OR mh.type='member_concession') " . (($this->excluded) ? " AND m.excluded = false " : "") . "
+            AND (mh.type='member' OR mh.type='member_concession' OR mh.type='probationary' OR mh.type='honourary' OR mh.type='life') " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             ORDER BY m.last_name ASC
             ");
         return $query->result_array();
@@ -100,7 +120,7 @@ class Supporter extends CI_model {
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
             AND mh.expiration_date < '$time'
-            AND (mh.type='member' OR mh.type='member_concession') " . (($this->excluded) ? " AND m.excluded = false " : "") . "
+            AND (mh.type='member' OR mh.type='member_concession' OR mh.type='probationary' OR mh.type='honourary' OR mh.type='life') " . (($this->excluded) ? " AND m.excluded = false " : "") . "
             ORDER BY m.last_name ASC
             ");
         return $query->result_array();
@@ -117,8 +137,10 @@ class Supporter extends CI_model {
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
             AND mh.expiration_date < mh2.expiration_date
             WHERE mh2.expiration_date IS NULL
-            AND mh.expiration_date >= '$time' " . (($this->excluded) ? " AND m.excluded = false " : "") . "
-            AND (mh.type='member' OR mh.type='member_concession')");
+            AND mh.expiration_date >= '$time'
+            AND (mh.type='member' OR mh.type='member_concession' OR mh.type='probationary' OR mh.type='honourary' OR mh.type='life') " . (($this->excluded) ? " AND m.excluded = false " : "") . "
+            ORDER BY m.last_name ASC
+            ");
         return $query->num_rows();
     }
     public function getExpiredMemberCount() {
