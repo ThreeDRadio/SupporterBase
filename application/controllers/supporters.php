@@ -64,7 +64,8 @@ class Supporters extends CI_Controller {
         $this->form_validation->set_rules('expiration_day', 'Expiration Day', 'required|integer');
         $this->form_validation->set_rules('expiration_month', 'Expiration Month', 'required|integer');
 
-        $match = $this->supporter->getSupporter($id)[0];
+        $match = $this->supporter->getSupporter($id);
+	$match = $match[0];
         if (empty($match['expiration_date'])) {
             $year = strftime("%Y");
             $match['expiration_date'] = strtotime("August 31 $year");
@@ -179,7 +180,8 @@ class Supporters extends CI_Controller {
         $this->form_validation->set_rules('postcode', 'Postcode', 'required|integer|exact_length[4]');
         $this->form_validation->set_rules('email', 'Email', 'valid_email');
 
-        $match = $this->supporter->getSupporter($id)[0];
+        $match = $this->supporter->getSupporter($id);
+	$match = $match[0];
         $data = array(
             'supporter_id' => $id,
             'supporter_info' => $match,
