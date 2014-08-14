@@ -7,3 +7,5 @@
 
 <p><b>Current Subscribers:</b> <?php echo $activeSubs; ?><br />
 <p><b>Unrenewed Subscribers:</b> <?php echo $expiredSubs; ?></p>
+
+<p><b>Mystery Supporters:</b> <?php echo $mysterySubs ?></p>
