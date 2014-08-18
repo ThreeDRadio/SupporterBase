@@ -12,6 +12,9 @@ class Users extends CI_Controller {
      * Displays the add user form...
      */
     public function add() {
+        $this->load->library('session');
+        $this->load->model('user');
+        $this->load->helper('url');
         $this->load->helper('form');
         $this->load->library('form_validation');
 

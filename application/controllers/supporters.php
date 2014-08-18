@@ -63,24 +63,32 @@ class Supporters extends CI_Controller {
         $this->form_validation->set_rules('expiration_year', 'Expiration Year', 'required|integer|exact_length[4]');
         $this->form_validation->set_rules('expiration_day', 'Expiration Day', 'required|integer');
         $this->form_validation->set_rules('expiration_month', 'Expiration Month', 'required|integer');
+        $this->form_validation->set_rules('payment_processed', 'Payment Processed', 'integer');
 
         $match = $this->supporter->getSupporter($id);
 	$match = $match[0];
         if (empty($match['expiration_date'])) {
             $year = strftime("%Y");
-            $match['expiration_date'] = strtotime("August 31 $year");
-        }
 
-        $newExpiryYear = strftime("%Y", $match['expiration_date']) +1;
-        $expirationMonth = strftime("%m", $match['expiration_date']);
-        $expirationDay = strftime("%d", $match['expiration_date']);
+	    $newExpiryYear = strftime("%Y") +1;
+	    $expirationMonth = strftime("%m");
+	    $expirationDay = strftime("%d");
+        }
+	else {
+		$newExpiryYear = strftime("%Y", $match['expiration_date']) +1;
+		$expirationMonth = strftime("%m", $match['expiration_date']);
+		$expirationDay = strftime("%d", $match['expiration_date']);
+	}
+
+
 
         $data = array(
             'supporter_info' => $match,
             'new_expiration_year' => $newExpiryYear,
             'new_expiration_month' => $expirationMonth,
             'new_expiration_day' => $expirationDay,
-            'note' => $this->input->post('note')
+            'note' => $this->input->post('note'),
+	    'payment_processed' => $this->input->post('payment_processed')
         );
 
         if ($this->form_validation->run() === FALSE) {
@@ -93,7 +101,7 @@ class Supporters extends CI_Controller {
                               $this->input->post('expiration_month') . "-" .
                               $this->input->post('expiration_day'));
 
-            $this->supporter->addTransaction($this->session->userdata('user_id'), $id, $date, $this->input->post('type'), $this->input->post('note'));
+            $this->supporter->addTransaction($this->session->userdata('user_id'), $id, $date, $this->input->post('type'), $this->input->post('note'), $this->input->post('payment_processed'));
             $this->load->view('header');
             $this->load->view('supporters/supporter_renewed');
             $this->load->view('footer');
@@ -127,6 +135,7 @@ class Supporters extends CI_Controller {
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->load->view('header');
+        $this->load->helper('url');
 
         $this->form_validation->set_rules('first', 'First Name', 'required|alpha_dash');
         $this->form_validation->set_rules('last', 'Last Name', 'required|alpha_dash');
@@ -155,7 +164,8 @@ class Supporters extends CI_Controller {
                 'email' => $this->input->post('email')
             );
 
-            $this->supporter->addSupporter($data);
+            $id = $this->supporter->addSupporter($data);
+
             $page_data = array(
                 'supporter_id' => $id
             );

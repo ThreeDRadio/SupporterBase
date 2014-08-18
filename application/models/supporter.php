@@ -14,7 +14,8 @@ class Supporter extends CI_model {
      * Note: This assumes you've already checked whether the user exists, etc.
      */
     public function addSupporter($supporterInfo) {
-        return $this->db->insert('supporters', $supporterInfo);
+        $this->db->insert('supporters', $supporterInfo);
+	return $this->db->insert_id();
     }
 
     public function updateSupporter($id, $supporterInfo) {
@@ -55,7 +56,8 @@ class Supporter extends CI_model {
     }
 
     public function addNote($data) {
-        return $this->db->insert('supporter_notes', $data);
+        $this->db->insert('supporter_notes', $data);
+	return $this->db->insert_id();
     }
 
     public function getSupporters() {
@@ -187,14 +189,15 @@ class Supporter extends CI_model {
         return $query->num_rows();
     }
 
-    public function addTransaction($user_id, $supporter_id, $expiration_date, $type, $note) {
+    public function addTransaction($user_id, $supporter_id, $expiration_date, $type, $note, $payment) {
         $data = array(
             'user_id' => $user_id,
             'supporter_id' => $supporter_id,
             'expiration_date' => $expiration_date,
             'type' => $type,
             'timestamp' => time(),
-            'note' => $note
+            'note' => $note,
+	    'payment_processed' => $payment
         );
         return $this->db->insert('transactions', $data);
     }

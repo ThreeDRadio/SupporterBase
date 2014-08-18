@@ -81,7 +81,8 @@ class User extends CI_model {
      * Generates a random salt to use on passwords.
      */
     public function getRandomSalt($length = 64) {
-        return strtr(base64_encode(mcrypt_create_iv($length)), '+', '.');
+        //return strtr(base64_encode(mcrypt_create_iv($length)), '+', '.');
+	return md5(time());
     }
 
 

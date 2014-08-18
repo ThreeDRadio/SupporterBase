@@ -30,16 +30,22 @@ $options = array(
 );
 
 if (empty($supporter_info['type'])) {
-    echo form_dropdown('type', $options, 'member');
+    echo form_dropdown('type', $options, 'sub');
 }
 else {
     echo form_dropdown('type', $options, $supporter_info['type']);
 }
 
 ?>
+<br /><br />
+<input id="payment_processed" type="checkbox" name="payment_processed" value="1" /> 
+<label for="payment_processed">Payment Processed</label><br />
+
 <br />
 <label for="note">Note:</label><br>
 <textarea name="note" rows="3" cols="100"></textarea><br />
+Note can be used for giveaway information, tshirt orders, etc.
+<br /> <br />
 
     <input type="submit" name="submit" value="Renew" />
     
