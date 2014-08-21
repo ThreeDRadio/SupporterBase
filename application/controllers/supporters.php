@@ -103,7 +103,23 @@ class Supporters extends CI_Controller {
 
             $this->supporter->addTransaction($this->session->userdata('user_id'), $id, $date, $this->input->post('type'), $this->input->post('note'), $this->input->post('payment_processed'));
             $this->load->view('header');
-            $this->load->view('supporters/supporter_renewed');
+            $this->load->view('supporters/supporter_renewed', $data);
+            $this->load->view('footer');
+        }
+
+    }
+
+
+    public function browse($kind, $status) {
+
+        if ($kind == "subscribers" && $status == "current") {
+
+            $supporters = $this->supporter->getCurrentSubscribers();
+            $data = array(
+                'supporters' => $supporters
+            );
+            $this->load->view('header');
+            $this->load->view('supporters/browse', $data);
             $this->load->view('footer');
         }
 
@@ -167,7 +183,17 @@ class Supporters extends CI_Controller {
             $id = $this->supporter->addSupporter($data);
 
             $page_data = array(
-                'supporter_id' => $id
+                'supporter_id' => $id,
+                'first_name' => $this->input->post('first'),
+                'last_name' => $this->input->post('last'),
+                'address1' => $this->input->post('address1'),
+                'address2' => $this->input->post('address2'),
+                'town' => $this->input->post('town'),
+                'state' => $this->input->post('state'),
+                'postcode' => $this->input->post('postcode'),
+                'country' => $this->input->post('country'),
+                'phone_mobile' => $this->input->post('phone'),
+                'email' => $this->input->post('email')
             );
             $this->load->view('supporters/supporter_added', $page_data);
         }

@@ -93,6 +93,22 @@ class Supporter extends CI_model {
         );
         return $query->num_rows();
     }
+    public function getCurrentSubscribers() {
+        $time = time();
+        $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
+            mh.expiration_date, mh.type, mh.payment_processed, mh.pack_sent
+            FROM supporters m
+            LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
+            LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
+            AND mh.expiration_date < mh2.expiration_date
+            WHERE mh2.expiration_date IS NULL
+            AND mh.expiration_date >= '$time'
+            AND (mh.type='sub' OR mh.type='sub_concession' OR mh.type='honourary' OR mh.type='life') " . (($this->excluded) ? " AND m.excluded = '0' " : "") . "
+            ORDER BY m.last_name ASC
+            ");
+        return $query->result_array();
+    }
 
 
     public function getCurrentMembers() {
