@@ -110,19 +110,30 @@ class Supporters extends CI_Controller {
     }
 
 
-    public function browse($kind, $status) {
+    public function browse($kind, $status="") {
 
         if ($kind == "subscribers" && $status == "current") {
-
             $supporters = $this->supporter->getCurrentSubscribers();
-            $data = array(
-                'supporters' => $supporters
-            );
-            $this->load->view('header');
-            $this->load->view('supporters/browse', $data);
-            $this->load->view('footer');
+        }
+        else if ($kind == "subscribers" && $status == "expired") {
+            $supporters = $this->supporter->getExpiredSubscribers();
+        }
+        else if ($kind == "members" && $status == "current") {
+            $supporters = $this->supporter->getCurrentMembers();
+        }
+        else if ($kind == "members" && $status == "expired") {
+            $supporters = $this->supporter->getExpiredMembers();
+        }
+        else if ($kind == "mystery") {
+            $supporters = $this->supporter->getMysterySupporters();
         }
 
+        $data = array(
+            'supporters' => $supporters
+        );
+        $this->load->view('header');
+        $this->load->view('supporters/browse', $data);
+        $this->load->view('footer');
     }
 
     public function add_note($id) {
@@ -153,8 +164,8 @@ class Supporters extends CI_Controller {
         $this->load->view('header');
         $this->load->helper('url');
 
-        $this->form_validation->set_rules('first', 'First Name', 'required|alpha_dash');
-        $this->form_validation->set_rules('last', 'Last Name', 'required|alpha_dash');
+        $this->form_validation->set_rules('first', 'First Name', 'alpha_dash');
+        $this->form_validation->set_rules('last', 'Last Name', 'required');
 
         $this->form_validation->set_rules('address1', 'Address Line 1', 'required');
 
@@ -206,8 +217,8 @@ class Supporters extends CI_Controller {
         $this->load->view('header');
         $this->load->helper('url');
 
-        $this->form_validation->set_rules('first', 'First Name', 'required|alpha_dash');
-        $this->form_validation->set_rules('last', 'Last Name', 'required|alpha_dash');
+        $this->form_validation->set_rules('first', 'First Name', 'alpha_dash');
+        $this->form_validation->set_rules('last', 'Last Name', 'required');
 
         $this->form_validation->set_rules('address1', 'Address Line 1', 'required');
 

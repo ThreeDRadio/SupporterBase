@@ -39,5 +39,15 @@ class Export extends CI_Controller {
         $this->output->set_header('Content-disposition: filename="members.csv"');
         $this->load->view('csv', $data);
     }
+    public function current_subscribers() {
+
+        $members = $this->supporter->getCurrentSubscribers();
+        $data = array(
+            'members' => $members
+        );
+        $this->output->set_content_type('text/csv');
+        $this->output->set_header('Content-disposition: filename="members.csv"');
+        $this->load->view('csv', $data);
+    }
 }
 
