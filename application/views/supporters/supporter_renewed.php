@@ -3,7 +3,7 @@
 
 <h3>Supporter Details</h3>
 <table>
-<tr><td><b>Supporter ID:</b></td><td><?php echo $supporter_info['supporter_id' ;?></td></tr>
+<tr><td><b>Supporter ID:</b></td><td><?php echo $supporter_info['supporter_id'] ;?></td></tr>
 <tr><td><b>Name:</b></td><td><?php echo $supporter_info['first_name'] . " " . $supporter_info['last_name'];?></td></tr>
 <tr><td><b>Address:</b></td><td>
 <?php echo $supporter_info['address1'] . "<br>";?>

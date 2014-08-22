@@ -218,13 +218,13 @@ class Supporters extends CI_Controller {
         $this->load->helper('url');
 
         $this->form_validation->set_rules('first', 'First Name', 'alpha_dash');
-        $this->form_validation->set_rules('last', 'Last Name', 'required');
+        $this->form_validation->set_rules('last', 'Last Name', '');
 
-        $this->form_validation->set_rules('address1', 'Address Line 1', 'required');
+        $this->form_validation->set_rules('address1', 'Address Line 1', '');
 
-        $this->form_validation->set_rules('town', 'Town/Suburb', 'required');
-        $this->form_validation->set_rules('state', 'State', 'required|alpha|min_length[2]|max_length[3]');
-        $this->form_validation->set_rules('postcode', 'Postcode', 'required|integer|exact_length[4]');
+        $this->form_validation->set_rules('town', 'Town/Suburb', '');
+        $this->form_validation->set_rules('state', 'State', 'alpha|min_length[2]|max_length[3]');
+        $this->form_validation->set_rules('postcode', 'Postcode', 'integer|exact_length[4]');
         $this->form_validation->set_rules('email', 'Email', 'valid_email');
 
         $match = $this->supporter->getSupporter($id);
