@@ -263,5 +263,66 @@ class Supporters extends CI_Controller {
         }
         $this->load->view('footer');
     }
+
+
+    public function expiry_fix() {
+        $db = $this->load->database('default', true);
+        $ONE_YEAR = + 365 * 24 * 60 * 60;
+
+        // get the current subscribers
+        $currentSubs = $this->supporter->getCurrentSubscribers();
+
+        $unmatched = array();
+        $duplicates = array();
+
+        print '<p style="font-family: monospace">';
+        foreach ($currentSubs as $subscriber) {
+            $tempSupporter = $db->query("SELECT * FROM temp_supporters 
+                                                     WHERE first_name=" . $db->escape($subscriber['first_name']) . 
+                                                     "AND last_name=" . $db->escape($subscriber['last_name'])  );
+
+            if ($tempSupporter->num_rows() == 0) {
+                //print "   Could not find match, please verify\n";
+                array_push($unmatched, $subscriber);
+            }
+            else if ($tempSupporter->num_rows() == 1) {
+                $temp = $tempSupporter->row_array();
+                //print "Processing $subscriber[first_name] $subscriber[last_name]...<br>";
+                //print "Have one match!<br>";
+                //print "Expiry date in database is: " . strftime('%d/%m/%Y', $subscriber['expiration_date']) . "<br>";
+                //print "Old expiry date was:        " . strftime('%d/%m/%Y', strtotime($temp['expiry'])) . "<br>";
+
+                $possibleNewExpiry = strtotime($temp['expiry']) + $ONE_YEAR;
+                //print "   Possible newexpiry date:    " . strftime('%d/%m/%Y', $possibleNewExpiry) . "<br>";
+
+                if ($possibleNewExpiry > $subscriber['expiration_date']) {
+                    print   '<span style="color: #009900">Updating ' . $subscriber['first_name'] . ' ' . $subscriber['last_name'] . '\'s expiration date to ' . strftime('%d/%m/%Y', $possibleNewExpiry). '</span><br>';
+
+                    $data = array( 'expiration_date' => $possibleNewExpiry);
+                    //$db->where('transaction_id', $subscriber['transaction_id']);
+                    //$db->update('transactions', $data);
+                }
+                else {
+                    print   '<span style="color: #ff9933">Leaving ' . $subscriber['first_name'] . ' ' . $subscriber['last_name'] . '\'s Expiration Date as is!</span><br>';
+                }
+
+            }
+            else if ($tempSupporter->num_rows() > 1) {
+                array_push($duplicates, $subscriber);
+                //print "   Have multiple matches, refining...\n";
+            }
+        }
+        print "<h2>Multiple Matches</h2>";
+        print '<p style="font-family: monospace">';
+        foreach ($duplicates as $subscriber) {
+            print "$subscriber[first_name] $subscriber[last_name]...<br>";
+        }
+        print "<h2>Unmatched</h2>";
+        print '<p style="font-family: monospace">';
+        foreach ($unmatched as $subscriber) {
+            print "$subscriber[first_name] $subscriber[last_name]...<br>";
+        }
+
+    }
 }
 
