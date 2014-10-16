@@ -223,8 +223,12 @@ class Supporters extends CI_Controller {
 
 
     public function process($type) {
-
-        $supporters = $this->supporter->getCurrentSubscribers();
+        if ($kind == "subscribers") {
+            $supporters = $this->supporter->getCurrentSubscribers();
+        }
+        else if ($kind == "members") {
+            $supporters = $this->supporter->getCurrentMembers();
+        }
 
         $data = array(
             'supporters' => $supporters
