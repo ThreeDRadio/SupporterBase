@@ -1,3 +1,5 @@
+<h2>Processing</h2>
+<p><b>Current Subscribers:</b> <a href="<?php echo site_url('supporters/process/subscribers') ?>">Process Subscriber Packs</a><br />
 
 
 <h2>Stats</h2>

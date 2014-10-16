@@ -74,6 +74,7 @@
 	}
 	</style>
 <script src="<?php echo base_url('js/jquery.js');?>" type="text/javascript"></script>
+<script src="<?php echo base_url('js/process.js');?>" type="text/javascript"></script>
 </head>
 <body>
 

@@ -128,6 +128,15 @@ class Supporter extends CI_model {
     }
 
 
+    public function setSubscriberPackSent($transactionID) {
+        $data = array(
+            'pack_sent' => '1'
+        );
+        $this->db->where('transaction_id', $transactionID);
+        $this->db->update('transactions', $data);
+
+        return true;
+    }
 
 
     public function getCurrentMembers() {

@@ -40,6 +40,16 @@ class Supporters extends CI_Controller {
         $this->load->view('ajax/matching_supporters', $data);
     }
 
+    public function ajaxSetSubscriberPackSent($transactionID) {
+
+        if (!empty($transactionID) && $this->supporter->setSubscriberPackSent($transactionID)) {
+            echo '<font color="#008800">Sent</font>';
+        }
+        else {
+            echo '<font color="#cc0000">Error!</font>';
+        }
+    }
+
     public function find() {
         $this->load->view('header');
         $this->load->helper('form');
@@ -209,6 +219,20 @@ class Supporters extends CI_Controller {
             $this->load->view('supporters/supporter_added', $page_data);
         }
         $this->load->view('footer');
+    }
+
+
+    public function process($type) {
+
+        $supporters = $this->supporter->getCurrentSubscribers();
+
+        $data = array(
+            'supporters' => $supporters
+        );
+        $this->load->view('header');
+        $this->load->view('supporters/process', $data);
+        $this->load->view('footer');
+
     }
 
     public function edit($id) {
