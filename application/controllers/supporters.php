@@ -222,7 +222,7 @@ class Supporters extends CI_Controller {
     }
 
 
-    public function process($type) {
+    public function process($kind) {
         if ($kind == "subscribers") {
             $supporters = $this->supporter->getCurrentSubscribers();
         }

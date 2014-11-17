@@ -247,15 +247,28 @@ class Supporter extends CI_model {
     }
 
     public function findSupporterByLastName($partialName) {
-        $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
-            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
-            mh.expiration_date, mh.type
-            FROM supporters m
-            LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
-            LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
-            AND mh.expiration_date < mh2.expiration_date
-            WHERE mh2.expiration_date IS NULL " . (($this->excluded) ? " AND m.excluded = '0' " : "") . "
-            AND m.last_name ILIKE " . $this->db->escape($partialName . '%'));
+        if (!is_numeric($partialName)) {
+            $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+                m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
+                mh.expiration_date, mh.type
+                FROM supporters m
+                LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
+                LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
+                AND mh.expiration_date < mh2.expiration_date
+                WHERE mh2.expiration_date IS NULL " . (($this->excluded) ? " AND m.excluded = '0' " : "") . "
+                AND m.last_name ILIKE " . $this->db->escape($partialName . '%'));
+        }
+        else {
+            $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+                m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
+                mh.expiration_date, mh.type
+                FROM supporters m
+                LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
+                LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id
+                AND mh.expiration_date < mh2.expiration_date
+                WHERE mh2.expiration_date IS NULL " . (($this->excluded) ? " AND m.excluded = '0' " : "") . "
+                AND (m.last_name ILIKE " . $this->db->escape($partialName . '%') . " OR m.supporter_id = " . $this->db->escape($partialName) . ")" );
+        }
 
         $results = array();
         foreach ($query->result_array() as $result) {

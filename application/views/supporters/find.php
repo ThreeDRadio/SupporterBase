@@ -1,7 +1,7 @@
 <h2>Find User</h2>
 
 
-    <label for="last_name">Last Name:</label>
+    <label for="last_name" style="width: 250px">Last Name or Subscriber Number:</label>
     <input id="last_name" type="input" name="last_name" /><br />
 
 <h3>Matches</h3>
