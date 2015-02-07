@@ -96,7 +96,7 @@ class Supporter extends CI_model {
     public function getCurrentSubscribers() {
         $time = time();
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
-            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email,
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.phone_home, m.email,
             mh.expiration_date, mh.type, mh.payment_processed, mh.pack_sent, mh.transaction_id, mh.note, mh.transaction_id
             FROM supporters m
             LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
