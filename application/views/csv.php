@@ -13,6 +13,9 @@ foreach ($members as $member) {
         if ($key == "expiration_date") {
             echo '"' . strftime('%d/%m/%y', $val) . '",';
         }
+        if ($key == "timestamp") {
+            echo '"' . strftime('%d/%m/%y', $val) . '",';
+        }
         else {
             echo '"' . $val . '",';
         }

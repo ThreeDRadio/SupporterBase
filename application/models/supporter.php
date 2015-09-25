@@ -25,7 +25,7 @@ class Supporter extends CI_model {
 
     public function getSupporter($id) {
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
-            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email, m.excluded,
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email, m.excluded, m.prefer_email,
             mh.expiration_date, mh.type
             FROM supporters m
             LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
@@ -79,7 +79,7 @@ class Supporter extends CI_model {
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
             m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email
             FROM supporters m
-            WHERE m.supporter_id NOT IN (SELECT supporter_id FROM transactions)
+            WHERE m.supporter_id NOT IN (SELECT supporter_id FROM transactions)" . (($this->excluded) ? " AND m.excluded = '0' " : "") . "
             ORDER BY m.last_name ASC"
         );
         return $query->result_array();
@@ -88,16 +88,29 @@ class Supporter extends CI_model {
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
             m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.email
             FROM supporters m
-            WHERE m.supporter_id NOT IN (SELECT supporter_id FROM transactions)
+            WHERE m.supporter_id NOT IN (SELECT supporter_id FROM transactions)" . (($this->excluded) ? " AND m.excluded = '0' " : "") . "
             ORDER BY m.last_name ASC"
         );
         return $query->num_rows();
     }
+
+    public function findDuplicates() {
+        $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
+            m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.phone_home, m.email
+            FROM supporters m
+            INNER JOIN (SELECT email FROM supporters WHERE excluded = '0' GROUP BY email HAVING count(supporter_id) > 1) dup ON m.email = dup.email
+            WHERE m.excluded = '0' 
+            ORDER BY m.email ASC
+            ");
+        return $query->result_array();
+
+    }
+
     public function getCurrentSubscribers() {
         $time = time();
         $query = $this->db->query("SELECT m.supporter_id, m.first_name, m.last_name, 
             m.address1, m.address2, m.town, m.state, m.postcode, m.phone_mobile, m.phone_home, m.email,
-            mh.expiration_date, mh.type, mh.payment_processed, mh.pack_sent, mh.transaction_id, mh.note, mh.transaction_id
+            mh.expiration_date, mh.type, mh.payment_processed, mh.pack_sent, mh.transaction_id, mh.note, mh.transaction_id, mh.timestamp
             FROM supporters m
             LEFT OUTER JOIN transactions mh ON m.supporter_id = mh.supporter_id
             LEFT OUTER JOIN transactions mh2 ON m.supporter_id = mh2.supporter_id

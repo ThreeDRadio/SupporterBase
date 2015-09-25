@@ -34,8 +34,16 @@
     <label for="email">Email:</label>
     <input type="input" name="email"  value="<?php echo $supporter_info['email'];?>" /><br />
 
+    <label for="email">Prefer Email:</label>
+    <input type="checkbox" name="prefer_email" /><br />
+
+<hr>
+<h3>Danger Zone:</h3>
+
     <label for="excluded">Exclude: </label>
     <input type="checkbox" name="excluded" value="1" <?php echo (($supporter_info['excluded'] == 1) ? " checked" : ""); ?> /><br />
+
+<hr>
 
     <input type="submit" name="submit" value="Update Supporter" />
 

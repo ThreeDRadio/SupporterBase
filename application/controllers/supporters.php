@@ -119,6 +119,16 @@ class Supporters extends CI_Controller {
 
     }
 
+    public function duplicates() {
+        $duplicates = $this->supporter->findDuplicates();
+
+        $data = array(
+            'supporters' => $duplicates
+        );
+        $this->load->view('header');
+        $this->load->view('supporters/browse', $data);
+        $this->load->view('footer');
+    }
 
     public function browse($kind, $status="") {
 
@@ -282,6 +292,7 @@ class Supporters extends CI_Controller {
                 'phone_mobile' => $this->input->post('phone'),
                 'email' => $this->input->post('email'),
                 'excluded' => $this->input->post('excluded'),
+                'prefer_email' => $this->input->post('prefer_email'),
             );
 
             $this->supporter->updateSupporter($id, $data);

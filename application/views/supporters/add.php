@@ -34,6 +34,9 @@
     <label for="email">Email:</label>
     <input type="input" name="email" /><br />
 
+    <label for="email">Prefer Email:</label>
+    <input type="checkbox" name="prefer_email" /><br />
+
     <input type="submit" name="submit" value="Add Supporter" />
 
 </form>
